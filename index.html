@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>ChessGames - Polished Modern Web Chess</title>
+		<meta name="description" content="Tactile, modern web chess with Solo AI, Local 2-Player, Online Rooms, Seasonal Leaderboards, and Friends.">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<!-- Global Application Header -->
+		<header class="app-header">
+			<div class="header-container">
+				<a href="#home" class="brand" id="brandLink">
+					<div class="brand-icon" id="brandIconSlot"><img src="assets/logo.jpg" alt="ChessGames Logo" class="brand-logo-img"></div>
+					<span>ChessGames</span>
+				</a>
+
+				<!-- Navigation Tabs (Home / Authenticated) -->
+				<nav class="nav-links" id="mainNavLinks">
+					<a href="#choose-game" class="nav-link" id="navPlay">
+						<span class="nav-icon" id="navPlayIcon"></span>
+						<span>Play</span>
+					</a>
+					<a href="#leaderboard" class="nav-link" id="navLeaderboard">
+						<span class="nav-icon" id="navLeaderboardIcon"></span>
+						<span>Leaderboard</span>
+					</a>
+					<a href="#friends" class="nav-link" id="navFriends">
+						<span class="nav-icon" id="navFriendsIcon"></span>
+						<span>Friends</span>
+					</a>
+					<a href="#messages" class="nav-link" id="navMessages">
+						<span class="nav-icon" id="navMessagesIcon"></span>
+						<span>Messages</span>
+					</a>
+					<a href="#profile" class="nav-link" id="navProfile">
+						<span class="nav-icon" id="navProfileIcon"></span>
+						<span>Profile</span>
+					</a>
+				</nav>
+
+				<!-- User Auth State / Header Actions -->
+				<div class="header-user-actions" id="headerUserActions">
+					<!-- Injected via JavaScript (Login/Register buttons or user badge chip) -->
+				</div>
+			</div>
+		</header>
+
+		<!-- Main View Container -->
+		<main class="main-content">
+
+			<!-- =========================================
+         0. LANDING SCREEN (WHEN FIRST OPENING)
+         ========================================= -->
+			<section class="view-section" id="viewLanding">
+				<div class="landing-container">
+
+					<div class="landing-hero-card">
+						<div class="landing-brand-mark" id="landingHeroIconSlot"><img src="assets/logo.jpg" alt="ChessGames Logo" class="landing-hero-logo-img"></div>
+						<h1 class="landing-title">ChessGames</h1>
+						<p class="landing-subtitle">Tactile, modern chess without clutter. Play against the computer, challenge friends locally, or battle online.</p>
+
+						<div class="landing-buttons-stack">
+							<button type="button" class="btn btn-primary landing-btn-lg" id="btnLandingPlay">
+								<span class="btn-icon-slot" id="iconLandingPlay"></span>
+								<span>Play</span>
+							</button>
+							<button type="button" class="btn btn-secondary landing-btn-lg" id="btnLandingLogin">
+								<span>Log In</span>
+							</button>
+							<button type="button" class="btn btn-brown landing-btn-lg" id="btnLandingRegister">
+								<span>Register</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- Highlights Row -->
+					<div class="landing-features-row">
+						<div class="landing-feature-box">
+							<span class="landing-feature-title">Solo & Local 2P</span>
+							<span class="landing-feature-sub">Play AI or same device</span>
+						</div>
+						<div class="landing-feature-box">
+							<span class="landing-feature-title">Standard FIDE ELO</span>
+							<span class="landing-feature-sub">Fair rating system</span>
+						</div>
+						<div class="landing-feature-box">
+							<span class="landing-feature-title">90-Day Seasons</span>
+							<span class="landing-feature-sub">Seasonal leaderboards</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         1. CHOOSE GAME VIEW (WHEN CLICKING PLAY)
+         ========================================= -->
+			<section class="view-section" id="viewChooseGame">
+				<div class="choose-game-container">
+
+					<div class="choose-game-header">
+						<h2 class="choose-game-title">Choose Game</h2>
+						<p class="choose-game-sub">Select your preferred game mode to begin.</p>
+					</div>
+
+					<div class="game-modes-grid">
+
+						<!-- Mode 1: SOLO -->
+						<div class="game-mode-card card-solo" id="cardModeSolo">
+							<div class="game-mode-icon-box" id="iconSoloSlot"></div>
+							<div class="game-mode-info">
+								<h3 class="game-mode-badge-title">Solo</h3>
+								<p class="game-mode-desc">Play against computer</p>
+							</div>
+						</div>
+
+						<!-- Mode 2: LOCAL 2 PLAYER -->
+						<div class="game-mode-card card-local" id="cardModeLocal">
+							<div class="game-mode-icon-box" id="iconLocalSlot"></div>
+							<div class="game-mode-info">
+								<h3 class="game-mode-badge-title">Local 2 Player</h3>
+								<p class="game-mode-desc">Two players, one device</p>
+							</div>
+						</div>
+
+						<!-- Mode 3: CREATE ROOM -->
+						<div class="game-mode-card card-create" id="cardModeCreateRoom">
+							<div class="game-mode-icon-box" id="iconCreateRoomSlot"></div>
+							<div class="game-mode-info">
+								<h3 class="game-mode-badge-title">Create Room</h3>
+								<p class="game-mode-desc">Play online with a friend</p>
+							</div>
+						</div>
+
+						<!-- Mode 4: JOIN ROOM -->
+						<div class="game-mode-card card-join" id="cardModeJoinRoom">
+							<div class="game-mode-icon-box" id="iconJoinRoomSlot"></div>
+							<div class="game-mode-info">
+								<h3 class="game-mode-badge-title">Join Room</h3>
+								<p class="game-mode-desc">Enter room code</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         2. PLAY VIEW (THE CHESSBOARD & MATCH SCREEN)
+         ========================================= -->
+			<section class="view-section" id="viewPlay">
+				<div class="game-layout">
+
+					<!-- Left / Center: Dominating Chessboard -->
+					<div class="board-column">
+						<div class="chessboard-frame" id="boardFrame">
+							<!-- Rank coordinates (8 to 1) -->
+							<div class="coord-ranks" id="coordRanks"></div>
+
+							<!-- 8x8 Board Container -->
+							<div class="chessboard" id="chessboard"></div>
+
+							<!-- File coordinates (a to h) -->
+							<div class="coord-files" id="coordFiles"></div>
+						</div>
+					</div>
+
+					<!-- Right: Compact Game Information Panel -->
+					<div class="game-panel">
+
+						<div class="match-header-bar">
+							<h2 class="match-title" id="matchTitleText">Local 2 Player</h2>
+							<span class="mode-badge" id="matchModeBadge">Unrated</span>
+						</div>
+
+						<!-- Top Player Card (Black) -->
+						<div class="player-card" id="cardPlayerBlack">
+							<div class="player-meta">
+								<div class="user-avatar-circle" id="avatarBlack">U2</div>
+								<div class="player-info-text">
+									<div class="player-name-row">
+										<div class="player-color-indicator black" title="Black pieces"></div>
+										<span class="player-name" id="nameBlack">User 2</span>
+									</div>
+									<div class="player-rank-elo-row" id="rankEloRowBlack">
+										<span class="player-rank-tag" id="rankBlack"></span>
+										<span class="player-elo-tag" id="eloBlack"></span>
+									</div>
+									<div class="captured-pieces-list" id="capturedByBlack"></div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Turn Status Banner -->
+						<div class="turn-status-banner" id="turnStatusBanner">
+							<span id="turnStatusText">White to move</span>
+							<span id="gameClockOrNotice"></span>
+						</div>
+
+						<!-- Bottom Player Card (White) -->
+						<div class="player-card active-turn" id="cardPlayerWhite">
+							<div class="player-meta">
+								<div class="user-avatar-circle" id="avatarWhite">U1</div>
+								<div class="player-info-text">
+									<div class="player-name-row">
+										<div class="player-color-indicator white" title="White pieces"></div>
+										<span class="player-name" id="nameWhite">User 1</span>
+									</div>
+									<div class="player-rank-elo-row" id="rankEloRowWhite">
+										<span class="player-rank-tag" id="rankWhite"></span>
+										<span class="player-elo-tag" id="eloWhite"></span>
+									</div>
+									<div class="captured-pieces-list" id="capturedByWhite"></div>
+								</div>
+							</div>
+						</div>
+
+						<!-- GAME REVIEW PANEL (ACTIVE ONLY IN REVIEW MODE) -->
+						<div class="review-control-panel" id="reviewControlPanel" style="display: none;">
+							<div class="review-header-row">
+								<span class="review-title">Game Review</span>
+								<span class="review-step-label" id="reviewStepLabel">Move 0 / 0</span>
+							</div>
+							<div class="review-nav-bar">
+								<button type="button" class="btn btn-secondary btn-sm" id="btnReplayFirst" title="First move">
+									<span id="iconReplayFirst"></span>
+									<span>First</span>
+								</button>
+								<button type="button" class="btn btn-secondary btn-sm" id="btnReplayPrev" title="Previous move">
+									<span id="iconReplayPrev"></span>
+									<span>Prev</span>
+								</button>
+								<button type="button" class="btn btn-secondary btn-sm" id="btnReplayNext" title="Next move">
+									<span>Next</span>
+									<span id="iconReplayNext"></span>
+								</button>
+								<button type="button" class="btn btn-secondary btn-sm" id="btnReplayLast" title="Last move">
+									<span>Last</span>
+									<span id="iconReplayLast"></span>
+								</button>
+							</div>
+							<button type="button" class="btn btn-primary btn-sm btn-full" id="btnExitReview" style="margin-top: 0.5rem;">
+								<span>Exit Review</span>
+							</button>
+						</div>
+
+						<!-- ONLINE ROOM PANEL (ACTIVE ONLY IN ROOM MODE) -->
+						<div class="online-room-panel" id="onlineRoomPanel" style="display: none;">
+							<div class="room-status-bar">
+								<span class="room-status-badge" id="roomStatusBadge">WAITING FOR PLAYER</span>
+								<span class="room-code-chip" id="roomCodeChip">CODE: -----</span>
+							</div>
+
+							<!-- Voice Chat Control -->
+							<div class="voice-chat-row">
+								<button type="button" class="btn btn-secondary btn-sm" id="btnVoiceMicToggle">
+									<span id="iconVoiceMic"></span>
+									<span id="voiceMicStatusText">MIC OFF</span>
+								</button>
+								<span class="voice-notice-tag" id="voiceNoticeTag">UNAVAILABLE</span>
+							</div>
+
+							<!-- In-Room Game Chat -->
+							<div class="room-chat-box">
+								<div class="room-chat-header">Game Chat</div>
+								<div class="room-chat-scroll" id="roomChatScroll">
+									<!-- Populated dynamically -->
+								</div>
+								<form class="room-chat-form" id="formRoomChat">
+									<input type="text" id="inputRoomChat" class="form-input" placeholder="Type a message..." maxlength="120">
+									<button type="submit" class="btn btn-primary btn-sm" id="btnSendRoomChat">
+										<span>Send</span>
+									</button>
+								</form>
+							</div>
+						</div>
+
+						<!-- Move History Log -->
+						<div class="move-history-panel" id="moveHistorySection">
+							<div class="history-header">Move History</div>
+							<div class="history-list" id="historyList">
+								<!-- Dynamically populated rows -->
+							</div>
+						</div>
+
+						<!-- Tactical Action Buttons -->
+						<div class="game-actions-grid" id="gameActionsGrid">
+							<button type="button" class="btn btn-primary btn-full" id="btnNewGame">
+								<span id="iconNewGame"></span>
+								<span>Change Mode</span>
+							</button>
+							<button type="button" class="btn btn-secondary" id="btnFlipBoard">
+								<span id="iconFlip"></span>
+								<span>Flip Board</span>
+							</button>
+							<button type="button" class="btn btn-secondary" id="btnOfferDraw">
+								<span id="iconDraw"></span>
+								<span>Draw</span>
+							</button>
+							<button type="button" class="btn btn-danger btn-full" id="btnResign">
+								<span id="iconResign"></span>
+								<span>Resign</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         3. LEADERBOARD VIEW
+         ========================================= -->
+			<section class="view-section" id="viewLeaderboard">
+				<div class="leaderboard-container">
+
+					<div class="leaderboard-header-card">
+						<div class="season-meta-group">
+							<h2 class="season-title" id="leaderboardSeasonTitle">Season 1 Leaderboard</h2>
+							<div class="season-countdown-pill">
+								<span id="iconLeaderboardClock"></span>
+								<span id="leaderboardCountdownText">Calculating time remaining...</span>
+							</div>
+						</div>
+						<!-- Fast-forward season button for testing / demonstration -->
+						<button type="button" class="btn btn-secondary btn-sm" id="btnTestSeasonReset" title="Simulate 90-day expiration to verify automatic reset logic">
+							<span>Simulate Season Reset</span>
+						</button>
+					</div>
+
+					<div class="leaderboard-table-card">
+						<table class="leaderboard-table">
+							<thead>
+								<tr>
+									<th style="width: 70px;">Rank</th>
+									<th>Player</th>
+									<th style="width: 130px;">Season ELO</th>
+									<th style="width: 140px;">Record (W-L-D)</th>
+								</tr>
+							</thead>
+							<tbody id="leaderboardTableBody">
+								<!-- Populated by JavaScript -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         4. FRIENDS & PLAYER SEARCH VIEW
+         ========================================= -->
+			<section class="view-section" id="viewFriends">
+				<div class="friends-container">
+
+					<!-- Search Players Card -->
+					<div class="friends-header-card">
+						<div class="friends-title-row">
+							<h2 class="friends-title">Search Players</h2>
+						</div>
+						<div class="player-search-bar-row">
+							<div class="search-input-wrap">
+								<span class="search-icon-slot" id="iconSearchPlayersSlot"></span>
+								<input type="text" id="inputSearchPlayers" class="form-input" placeholder="Search username...">
+							</div>
+							<button type="button" class="btn btn-secondary btn-sm" id="btnClearSearch">
+								<span>Clear</span>
+							</button>
+						</div>
+
+						<!-- Search Results List -->
+						<div class="player-search-results" id="playerSearchResults"></div>
+					</div>
+
+					<!-- Friends & Social Section -->
+					<div class="friends-list-card">
+						<div class="friends-subtabs-row">
+							<button type="button" class="subtab-btn active" id="tabMyFriends">Friends</button>
+							<button type="button" class="subtab-btn" id="tabMyFollowing">Following</button>
+							<button type="button" class="subtab-btn" id="tabMyFollowers">Followers</button>
+						</div>
+
+						<div class="friends-list" id="friendsListContainer">
+							<!-- Populated by JavaScript -->
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         5. MESSAGES VIEW
+         ========================================= -->
+			<section class="view-section" id="viewMessages">
+				<div class="messages-layout">
+
+					<!-- Sidebar: Conversations -->
+					<aside class="chat-sidebar">
+						<div class="chat-sidebar-header">Conversations</div>
+						<div class="chat-user-list" id="chatConversationsList">
+							<!-- Populated by JavaScript -->
+						</div>
+					</aside>
+
+					<!-- Main Chat Pane -->
+					<div class="chat-main-pane">
+						<div class="chat-main-header">
+							<div class="chat-header-user">
+								<div class="user-avatar-circle" id="chatActiveAvatar" style="width: 32px; height: 32px; font-size: 0.75rem;">?</div>
+								<span class="chat-header-name" id="chatActiveName">Select a friend</span>
+							</div>
+							<button type="button" class="btn btn-secondary btn-sm" id="btnChallengeFromChat" style="display: none;">
+								<span>Challenge</span>
+							</button>
+						</div>
+
+						<div class="chat-messages-scroll" id="chatMessagesScroll">
+							<!-- Populated by JavaScript -->
+						</div>
+
+						<form class="chat-input-bar" id="formSendMessage">
+							<input type="text" id="inputChatMessage" class="form-input" placeholder="Type a message..." disabled>
+							<button type="submit" class="btn btn-primary btn-sm" id="btnSendChat" disabled>
+								<span id="iconSendMsg"></span>
+								<span>Send</span>
+							</button>
+						</form>
+					</div>
+				</div>
+			</section>
+
+			<!-- =========================================
+         6. OWN PROFILE VIEW
+         ========================================= -->
+			<section class="view-section" id="viewProfile">
+				<div class="profile-container">
+
+					<!-- Hero Card -->
+					<div class="profile-hero-card">
+						<div class="profile-avatar-large" id="profileHeroAvatar">
+							<span id="profileHeroInitials">--</span>
+						</div>
+						<div class="profile-hero-info">
+							<div class="profile-title-action-row">
+								<div>
+									<h2 class="profile-username" id="profileHeroUsername">Guest Player</h2>
+									<span class="profile-handle" id="profileHeroHandle">@guest</span>
+								</div>
+								<button type="button" class="btn btn-secondary btn-sm" id="btnToggleEditProfile">
+									<span id="iconEditProfile"></span>
+									<span>Edit Profile</span>
+								</button>
+							</div>
+
+							<div class="profile-badges-row">
+								<span class="badge-rank" id="profileHeroRank">UNRANKED</span>
+								<span class="badge-elo" id="profileHeroElo">0 ELO</span>
+							</div>
+							<p class="profile-unranked-hint" id="profileUnrankedHint">Play your first rated game to receive your rating.</p>
+						</div>
+					</div>
+
+					<!-- Social Counters Row -->
+					<div class="profile-social-counters-row">
+						<div class="social-counter-item">
+							<span class="social-counter-val" id="profileCountFollowers">0</span>
+							<span class="social-counter-lbl">Followers</span>
+						</div>
+						<div class="social-counter-item">
+							<span class="social-counter-val" id="profileCountFollowing">0</span>
+							<span class="social-counter-lbl">Following</span>
+						</div>
+						<div class="social-counter-item">
+							<span class="social-counter-val" id="profileCountFriends">0</span>
+							<span class="social-counter-lbl">Friends</span>
+						</div>
+					</div>
+
+					<!-- Statistics Grid -->
+					<div class="stats-cards-grid">
+						<!-- Current Season Stats -->
+						<div class="stat-box">
+							<div class="stat-box-title" id="profileSeasonTitle">Season 1</div>
+							<div class="stat-metrics-list">
+								<div class="stat-metric">
+									<span class="metric-number" id="profileSeasonWins">0</span>
+									<span class="metric-label">Wins</span>
+								</div>
+								<div class="stat-metric">
+									<span class="metric-number" id="profileSeasonLosses">0</span>
+									<span class="metric-label">Losses</span>
+								</div>
+								<div class="stat-metric">
+									<span class="metric-number" id="profileSeasonDraws">0</span>
+									<span class="metric-label">Draws</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Lifetime Stats -->
+						<div class="stat-box">
+							<div class="stat-box-title">Lifetime Record</div>
+							<div class="stat-metrics-list">
+								<div class="stat-metric">
+									<span class="metric-number" id="profileLifetimeWins">0</span>
+									<span class="metric-label">Wins</span>
+								</div>
+								<div class="stat-metric">
+									<span class="metric-number" id="profileLifetimeLosses">0</span>
+									<span class="metric-label">Losses</span>
+								</div>
+								<div class="stat-metric">
+									<span class="metric-number" id="profileLifetimeDraws">0</span>
+									<span class="metric-label">Draws</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Recent Games Card -->
+					<div class="profile-recent-games-card">
+						<h3 class="recent-games-title">Recent Games</h3>
+						<div class="recent-games-list" id="profileRecentGamesList">
+							<!-- Populated dynamically with matches -->
+						</div>
+					</div>
+
+					<!-- Profile Settings Card (Collapsible) -->
+					<div class="profile-settings-card" id="profileSettingsSection" style="display: none;">
+						<h3 class="settings-card-title">Edit Profile</h3>
+
+						<!-- Validation Message -->
+						<div class="form-validation-msg" id="profileFormMsg"></div>
+
+						<!-- Edit Username -->
+						<div class="form-group">
+							<label class="form-label" for="inputEditUsername">Username</label>
+							<input type="text" id="inputEditUsername" class="form-input" maxlength="20" placeholder="Enter new username">
+						</div>
+
+						<!-- Profile Photo Controls -->
+						<div class="form-group">
+							<label class="form-label">Profile Photo</label>
+							<div class="photo-controls-row">
+								<input type="file" id="inputProfilePhoto" class="photo-input-hidden" accept="image/png, image/jpeg, image/webp">
+								<button type="button" class="btn btn-secondary btn-sm" id="btnUploadPhoto">
+									<span id="iconUpload"></span>
+									<span>Upload Photo</span>
+								</button>
+								<button type="button" class="btn btn-secondary btn-sm" id="btnRemovePhoto">
+									<span id="iconRemovePhoto"></span>
+									<span>Remove Photo</span>
+								</button>
+							</div>
+						</div>
+
+						<!-- Settings Buttons -->
+						<div class="settings-actions-row">
+							<div style="display: flex; gap: 0.75rem;">
+								<button type="button" class="btn btn-primary" id="btnSaveProfile">
+									<span>Save Changes</span>
+								</button>
+								<button type="button" class="btn btn-secondary" id="btnCancelProfile">
+									<span>Cancel</span>
+								</button>
+							</div>
+							<button type="button" class="btn btn-danger btn-sm" id="btnLogout">
+								<span id="iconLogout"></span>
+								<span>Log Out</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<!-- =========================================
+       MODALS & DIALOGS
+       ========================================= -->
+
+		<!-- 1. Solo Mode Setup Modal -->
+		<div class="modal-overlay" id="modalSoloSetup">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Solo - Play against Computer</h3>
+					<button type="button" class="modal-close-btn" id="btnCloseSoloSetup" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="form-label">Computer Difficulty</label>
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; cursor: pointer;">
+								<input type="radio" name="aiDifficulty" value="beginner" id="diffBeginner">
+								<span>Beginner (~800 ELO)</span>
+							</label>
+							<label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; cursor: pointer;">
+								<input type="radio" name="aiDifficulty" value="casual" checked id="diffCasual">
+								<span>Casual (~1200 ELO)</span>
+							</label>
+							<label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; cursor: pointer;">
+								<input type="radio" name="aiDifficulty" value="master" id="diffMaster">
+								<span>Master (~1600 ELO)</span>
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label">Play As</label>
+						<div style="display: flex; gap: 1rem;">
+							<label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; cursor: pointer;">
+								<input type="radio" name="aiColor" value="w" checked id="aiPlayWhite">
+								<span>White (First move)</span>
+							</label>
+							<label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; cursor: pointer;">
+								<input type="radio" name="aiColor" value="b" id="aiPlayBlack">
+								<span>Black</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="btnCancelSoloSetup">Cancel</button>
+					<button type="button" class="btn btn-primary" id="btnStartSoloMatch">Start Match</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 2. Local 2 Player Setup Modal -->
+		<div class="modal-overlay" id="modalMatchSetup">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Local 2 Player</h3>
+					<button type="button" class="modal-close-btn" id="btnCloseMatchSetup" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="form-label" for="setupPlayer1">Player 1 (White)</label>
+						<input type="text" id="setupPlayer1" class="form-input" placeholder="User 1">
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="setupPlayer2">Player 2 (Black)</label>
+						<input type="text" id="setupPlayer2" class="form-input" placeholder="User 2">
+					</div>
+					<div class="form-group" id="matchRatedToggleRow">
+						<label class="form-label">Match Mode</label>
+						<div style="display: flex; gap: 0.75rem;">
+							<label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; font-size: 0.9rem; cursor: pointer;">
+								<input type="radio" name="matchRatedOption" value="casual" checked id="matchRatedNo">
+								Unrated (Casual)
+							</label>
+							<label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; font-size: 0.9rem; cursor: pointer;" id="ratedRadioLabel">
+								<input type="radio" name="matchRatedOption" value="rated" id="matchRatedYes">
+								Rated (Affects ELO)
+							</label>
+						</div>
+						<p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;" id="matchRatedNotice">
+							Guest games are always Unrated. Log in to play rated matches.
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="btnCancelMatchSetup">Cancel</button>
+					<button type="button" class="btn btn-primary" id="btnConfirmStartMatch">Start Match</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 3. Create Room Modal -->
+		<div class="modal-overlay" id="modalCreateRoom">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Create Room</h3>
+					<button type="button" class="modal-close-btn" id="btnCloseCreateRoom" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body" style="align-items: center; text-align: center;">
+					<p style="font-weight: 600; color: var(--text-secondary);">Share this code with your friend to join the match:</p>
+
+					<div class="room-code-badge" id="createdRoomCodeBadge">A7K92</div>
+
+					<button type="button" class="btn btn-secondary btn-sm" id="btnCopyRoomCode">
+						<span id="iconCopySlot"></span>
+						<span>Copy Room Code</span>
+					</button>
+
+					<p style="font-size: 0.85rem; font-weight: 700; color: var(--btn-green-bg); margin-top: 0.5rem;" id="roomWaitingStatusText">
+						Waiting for opponent to connect...
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="btnCancelCreateRoom">Cancel</button>
+					<button type="button" class="btn btn-primary" id="btnSimulatePeerJoin" title="Start game or test with second tab">
+						<span>Start Match</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 4. Join Room Modal -->
+		<div class="modal-overlay" id="modalJoinRoom">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title">Join Room</h3>
+					<button type="button" class="modal-close-btn" id="btnCloseJoinRoom" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-validation-msg" id="joinRoomMsg"></div>
+					<div class="form-group">
+						<label class="form-label" for="inputJoinRoomCode">Room Code</label>
+						<input type="text" id="inputJoinRoomCode" class="form-input" placeholder="e.g. A7K92" maxlength="10" style="text-transform: uppercase; font-family: monospace; font-size: 1.2rem; letter-spacing: 0.1em; text-align: center;">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="btnCancelJoinRoom">Cancel</button>
+					<button type="button" class="btn btn-primary" id="btnSubmitJoinRoom">Join Game</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 5. Pawn Promotion Modal -->
+		<div class="modal-overlay" id="modalPromotion">
+			<div class="modal-box" style="max-width: 360px;">
+				<div class="modal-header">
+					<h3 class="modal-title">Promote Pawn</h3>
+				</div>
+				<div class="modal-body">
+					<div class="promotion-options-grid" id="promotionOptions">
+						<!-- Populated by JavaScript with Queen, Rook, Bishop, Knight pieces -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 6. Game Over Modal -->
+		<div class="modal-overlay" id="modalGameOver">
+			<div class="modal-box">
+				<div class="modal-header">
+					<h3 class="modal-title" id="gameOverHeaderTitle">Game Over</h3>
+					<button type="button" class="modal-close-btn" id="btnCloseGameOver" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="game-over-summary">
+						<div class="game-over-banner" id="gameOverTitle">CHECKMATE</div>
+						<div class="game-over-winner-banner" id="gameOverWinnerBanner">USER 1 WINS</div>
+						<div class="game-over-subtext" id="gameOverReasonText">Checkmate</div>
+
+						<div class="elo-change-card" id="gameOverEloCard">
+							<div class="elo-change-col">
+								<span class="elo-change-name" id="eloChangeWhiteName">White</span>
+								<span class="elo-change-val gain" id="eloChangeWhiteVal">+22</span>
+								<span style="font-size: 0.75rem; color: var(--text-muted);" id="eloAfterWhite">1362 ELO</span>
+								<span style="font-size: 0.75rem; font-weight: 700; color: var(--btn-gold-bg);" id="rankAfterWhite">GOLD III</span>
+							</div>
+							<div class="elo-change-col">
+								<span class="elo-change-name" id="eloChangeBlackName">Black</span>
+								<span class="elo-change-val loss" id="eloChangeBlackVal">-22</span>
+								<span style="font-size: 0.75rem; color: var(--text-muted);" id="eloAfterBlack">1298 ELO</span>
+								<span style="font-size: 0.75rem; font-weight: 700; color: var(--btn-gold-bg);" id="rankAfterBlack">GOLD III</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="flex-direction: column; gap: 0.5rem;">
+					<button type="button" class="btn btn-primary btn-full" id="btnGameOverReview">
+						<span>Review Game</span>
+					</button>
+					<div style="display: flex; gap: 0.5rem; width: 100%;">
+						<button type="button" class="btn btn-secondary btn-full" id="btnGameOverNewGame">
+							<span>New Game</span>
+						</button>
+						<button type="button" class="btn btn-secondary btn-full" id="btnGameOverBack">
+							<span>Back to Play</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 7. Public Profile Modal -->
+		<div class="modal-overlay" id="modalPublicProfile">
+			<div class="modal-box" style="max-width: 480px;">
+				<div class="modal-header">
+					<h3 class="modal-title">Player Profile</h3>
+					<button type="button" class="modal-close-btn" id="btnClosePublicProfile" aria-label="Close">
+						<span class="icon-close-slot"></span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="public-profile-hero">
+						<div class="profile-avatar-large" id="pubHeroAvatar">
+							<span id="pubHeroInitials">--</span>
+						</div>
+						<div class="pub-profile-meta">
+							<h3 class="pub-username" id="pubHeroUsername">Player</h3>
+							<span class="pub-handle" id="pubHeroHandle">@player</span>
+							<div class="profile-badges-row" style="margin-top: 0.35rem;">
+								<span class="badge-rank" id="pubHeroRank">GOLD III</span>
+								<span class="badge-elo" id="pubHeroElo">1340 ELO</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Public Social Actions -->
+					<div class="pub-actions-row">
+						<button type="button" class="btn btn-primary btn-sm" id="btnPubFollow">
+							<span id="iconPubFollow"></span>
+							<span id="pubFollowText">Follow</span>
+						</button>
+						<button type="button" class="btn btn-secondary btn-sm" id="btnPubAddFriend">
+							<span id="iconPubFriend"></span>
+							<span id="pubFriendText">Add Friend</span>
+						</button>
+						<button type="button" class="btn btn-secondary btn-sm" id="btnPubMessage">
+							<span>Message</span>
+						</button>
+					</div>
+
+					<!-- Followers / Following / Friends counters -->
+					<div class="pub-stats-counters">
+						<div class="pub-counter-col">
+							<span class="pub-counter-val" id="pubFollowersCount">0</span>
+							<span class="pub-counter-lbl">Followers</span>
+						</div>
+						<div class="pub-counter-col">
+							<span class="pub-counter-val" id="pubFollowingCount">0</span>
+							<span class="pub-counter-lbl">Following</span>
+						</div>
+						<div class="pub-counter-col">
+							<span class="pub-counter-val" id="pubFriendsCount">0</span>
+							<span class="pub-counter-lbl">Friends</span>
+						</div>
+					</div>
+
+					<!-- Seasonal Record -->
+					<div class="pub-season-card">
+						<span class="pub-season-title" id="pubSeasonTitle">Season 1</span>
+						<div class="pub-record-nums">
+							<span id="pubSeasonRecord">0 W - 0 L - 0 D</span>
+						</div>
+					</div>
+
+					<!-- Recent Games of this player -->
+					<div class="pub-recent-games-wrap">
+						<span class="pub-recent-title">Recent Games</span>
+						<div class="recent-games-list" id="pubRecentGamesList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 8. Auth Modal (Login / Register) -->
+		<div class="modal-overlay" id="modalAuth">
+			<div class="modal-box">
+				<div class="modal-tabs">
+					<button type="button" class="modal-tab-btn active" id="tabAuthLogin">Log In</button>
+					<button type="button" class="modal-tab-btn" id="tabAuthRegister">Create Account</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-validation-msg" id="authValidationMsg"></div>
+					<div class="form-group">
+						<label class="form-label" for="authUsername">Username</label>
+						<input type="text" id="authUsername" class="form-input" placeholder="Enter username" maxlength="20">
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="authPassword">Password</label>
+						<input type="password" id="authPassword" class="form-input" placeholder="Enter password">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="btnCancelAuth">Cancel</button>
+					<button type="button" class="btn btn-primary" id="btnSubmitAuth">Log In</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+		<script src="js/pieces.js"></script>
+		<script src="js/elo.js"></script>
+		<script src="js/services.js"></script>
+		<script src="js/storage.js"></script>
+		<script src="js/sound.js"></script>
+		<script src="js/chess-engine.js"></script>
+		<script src="js/room-channel.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
